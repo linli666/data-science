@@ -1,4 +1,7 @@
 # get sub-links and title from Drexel ECE department website
+import urllib.request
+import urllib.parse
+import re
 def getlink(link): 
     title_links = {}
     try:        
