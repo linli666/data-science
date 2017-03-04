@@ -1,0 +1,23 @@
+# get sub-links and title from Drexel ECE department website
+def getlink(link): 
+    title_links = {}
+    try:        
+        url = link
+        req = urllib.request.Request(url)
+        resp = urllib.request.urlopen(req)
+        resp_data = resp.read()
+        sub_links = re.findall(r'href=\"(http.*?)\"',str(resp_data))
+        title = re.findall(r'<title>(.*?)</title>',str(resp_data))
+        title_links['title']= title[0]
+        title_links['links'] = sub_links
+    except Exception:
+        title_links = {'title':'','links':[]}
+    return title_links
+title = []
+title_links = getlink('http://drexel.edu/ece/')
+title.append(title_links['title'])
+links = title_links['links']
+for item in links:
+    print(item)
+    title_links = getlink(item) 
+    print(title_links['title'])
