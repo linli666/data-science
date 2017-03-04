@@ -1,2 +1,2 @@
-# data-science
-< For data science study group
+# Data-science
+> For data science study group
