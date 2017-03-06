@@ -28,7 +28,6 @@ predicted_cumsum = predicted_diff.cumsum()
 
 predicted_log = pd.Series(ts_log.ix[0], index=ts_log.index)
 predicted_AR_log = predicted_log.add(predicted_cumsum,fill_value=0)
-predicted_AR_log.head()
 
 predicted_price = np.exp(predicted_AR_log)
 plt.plot(ts)
