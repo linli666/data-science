@@ -4,10 +4,33 @@
 import pandas as pd
 import pandas_datareader.data as web
 import datetime
+import numpy as np
+import matplotlib.pylab as plt
+%matplotlib inline
+from matplotlib.pylab import rcParams
+rcParams['figure.figsize'] = 15, 6
 
 start = datetime.datetime(2016,3,5)
 end = datetime.date.today()
 
 google = web.DataReader("GOOG", "yahoo", start, end)
- 
-google.head()
+ts = google['Close'] 
+
+ts_log = np.log(ts)
+
+from statsmodels.tsa.arima_model import ARIMA
+
+model = ARIMA(ts_log, order=(1, 1, 0))  
+results_AR = model.fit(disp=-1)  
+
+predicted_diff = pd.Series(results_AR.fittedvalues, copy=True)
+predicted_cumsum = predicted_diff.cumsum()
+
+predicted_log = pd.Series(ts_log.ix[0], index=ts_log.index)
+predicted_AR_log = predicted_log.add(predicted_cumsum,fill_value=0)
+predicted_AR_log.head()
+
+predicted_price = np.exp(predicted_AR_log)
+plt.plot(ts)
+plt.plot(predicted_price,'green')
+plt.title('RMSE: %.4f'% np.sqrt(sum((predicted_price-ts)**2)/len(ts)))
