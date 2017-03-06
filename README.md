@@ -6,4 +6,5 @@
 
 # 2. Google stock price analysis using ARIMA
 > Predict price of stocks by using ARIMA model
+
 > Get data from Yahoo Finance
